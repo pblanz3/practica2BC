@@ -9,14 +9,21 @@ Este proyecto implementa un sistema para la gestión de skins en videojuegos med
 
 ---
 
-## Tabla de Contenidos
-1. [Cómo Montarlo Todo](#cómo-montarlo-todo)
+## Tabla de Contenidos del EJERCICIO 2
+1. [Cómo Montarlo](#cómo-montarlo)
 2. [Lanzamiento del Código](#lanzamiento-del-código)
 3. [Explicación del Código](#explicación-del-código)
 
 ---
 
-## Cómo Montarlo Todo
+## Cómo Montarlo
+
+Se añade el contrato Tienda.sol en [remix-ethereum](remix.ethereum.org), se compila con la última versión de Solidity. Tras esto, al Desplegarlo, añadimos nuestra Wallet de Metamask.
+Copiamos en la página de compilación en el botón **ABI** el contenido de tienda.json y se añade a **ejercicio2/mi-bazar-dapp/src/contracts/src/abis/**.
+
+Además añadimos la dirección de la tienda ya desplegada en **ejercicio2/mi-bazar-dapp/src/contracts/src/addresses.js**.
+
+
 ---
 
 ## Lanzamiento del Código
