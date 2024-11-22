@@ -173,7 +173,6 @@ function App() {
       // Establecer el contrato con el signer para permitir transacciones
       const contratoMiBazarConSigner = contratoMiBazar.connect(signer);
       const tx = await contratoMiBazarConSigner.pujar(skinId, {
-        //value: ethers.utils.parseEther(cantidad),
         value: ethers.utils.parseEther(cantidad.toString()),
       });
       await tx.wait();
@@ -191,6 +190,7 @@ function App() {
       // Establecer el contrato con el signer para permitir transacciones
       const contratoMiBazarConSigner = contratoMiBazar.connect(signer);
 
+      //Se lanza terminarSubasta del contrato
       const tx = await contratoMiBazarConSigner.terminarSubasta(skinId);
       await tx.wait();
       alert("Puja realizada");
@@ -199,42 +199,6 @@ function App() {
     }
   };
 
-  const registerUser = async () => {
-    if (!userId) return alert("Por favor ingresa un ID de usuario");
-    try {
-      const tx = await contratoMiBazar.registrarUsuario(userId);
-      await tx.wait();
-      alert("Usuario registrado con éxito");
-      setUserRegistered(true);
-    } catch (error) {
-      console.error("Error registrando usuario:", error.message);
-    }
-  };
-
- /* const fetchSkins = async () => {
-    let skinsArray = [];
-    try {
-      const userAddress = await signer.getAddress();
-      const totalSkins = await contratoMiBazar.contadorSkins();
-      for (let i = 1; i <= totalSkins; i++) {
-        const skin = await contratoMiBazar.almacenSkins(i);
-        if(skin.propietario === "0x848764f4e78146b53C51a4cDb3d89a5bF792936E"){
-        skinsArray.push({
-          id: skin.id,
-          nombre: skin.name,
-          file: skin.file,
-          precio_compra: skin.precio_compra,
-          precio_alquiler: skin.precio_alquiler,
-          propietario: skin.propietario,
-        });
-      }
-      }
-      setSkins(skinsArray);
-    } catch (error) {
-      console.error("Error al listar skins:", error);
-    }
-  };
-*/
   const fetchSkins = async () => {
       try {
         const userAddress = await signer.getAddress();
@@ -282,8 +246,8 @@ function App() {
       for (let i = 1; i <= totalSkins; i++) {
         const subasta = await contratoMiBazar.almacenSkins(i);
         //console.log("El tiempo limite es: "+subasta.tiempo_limite);
-        if (subasta.en_subasta===true) {
-          if(subasta.tiempo_limite.toString()!=="0"){
+        if (subasta.en_subasta===true) { //subastable == true
+          if(subasta.tiempo_limite.toString()!=="0"){  //está montada
             subastaArray.push({
               id: subasta.id,
               nombre: subasta.name,

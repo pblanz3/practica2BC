@@ -19,7 +19,6 @@ contract Tienda is Ownable {
     }
 
     mapping(uint256 => Skin) public almacenSkins;
-    mapping(uint256 => Skin) public subastas;
     uint256 public contadorSkins;
     address public admin;
 
@@ -34,10 +33,6 @@ contract Tienda is Ownable {
     }
 
     mapping (address => string) public userFiles;
-    
-    function setFileIPFS(string memory file) external {
-        userFiles[msg.sender] = file;
-    }
     
 
     function _crearSkin(string memory _name, string memory _file, uint256 _precio_compra, uint256 _precio_alquiler, bool subastable) external soloPropietario {
@@ -63,15 +58,12 @@ contract Tienda is Ownable {
         Skin storage skin = almacenSkins[_id];
         require(skin.disponible_para_compra, "Skin no disponible para compra");
         // Verificar si el valor enviado es suficiente para la compra
-        //uint dinero_divisor = msg.value;
         require(msg.value >= skin.precio_compra, "No enviaste suficiente cashhh");
         
         // Transferir ETH al propietario (admin)
-        //if (msg.value > skin.precio_compra) {
         payable(admin).transfer(msg.value);
 
-        
-
+        //Se actualizan valores de la skin
         skin.propietario = msg.sender;
         skin.disponible_para_compra = false;
         skin.disponible_para_alquiler = false;
@@ -86,9 +78,6 @@ contract Tienda is Ownable {
         Skin storage skin = almacenSkins[_id];
         require(skin.disponible_para_compra, "Skin ya vendida");
         require(skin.disponible_para_alquiler, "Skin no disponible para alquiler");
-        //require(skin.propietario != msg.sender, "No puedes alquilar tu propia skin");
-        //require(skin.propietario == admin, "No puedes alquilar una skin alquilada");
-        //require(skin.tiempo_limite < block.timestamp, "Skin ya en alquiler");
 
         uint costoAlquiler = skin.precio_alquiler * _diasAlquiler;
         require(msg.value >= costoAlquiler, "No se ha enviado suficiente ETH para el alquiler");
@@ -96,6 +85,7 @@ contract Tienda is Ownable {
         // Transferir ETH al propietario (admin)
         payable(admin).transfer(msg.value);
 
+        //Se actualizan valores de la skin
         skin.disponible_para_compra=false;
         skin.disponible_para_alquiler=false;
         skin.usuario_en_alquiler = msg.sender;
@@ -118,14 +108,13 @@ contract Tienda is Ownable {
         require(_id <= contadorSkins, "El producto no existe");
         Skin storage skin = almacenSkins[_id];
         require(skin.en_subasta, "La skin no esta en subasta");
+        // Verificar que el valor enviado es suficiente para cubrir la puja
         require(msg.value > skin.precio_compra, "La puja debe ser mayor al precio actual");
 
-        // Verificar que el valor enviado es suficiente para cubrir la puja
-        //require(msg.value >= nuevaPuja, "No se ha enviado suficiente ETH para la puja");
-        //payable(skin.propietario).transfer(nuevaPujaReduced);
         if (skin.propietario != admin) {
             payable(skin.propietario).transfer(skin.precio_compra);
         }
+        //Se actualizan valores de la skin
         skin.precio_compra = msg.value;
         skin.propietario = msg.sender;
     }
@@ -147,7 +136,6 @@ contract Tienda is Ownable {
     function montarSubasta(uint256 _id, uint256 tiempo) external soloPropietario {
         require(_id <= contadorSkins, "El producto no existe");
         Skin storage skin = almacenSkins[_id];
-        subastas[_id] = skin;
         //require(skin.disponible_para_compra, "No disponible para venta");
         require(skin.en_subasta, "La skin no esta en subasta");
         skin.tiempo_limite = block.timestamp + (tiempo * 1 minutes);
