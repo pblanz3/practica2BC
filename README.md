@@ -40,8 +40,31 @@ Cuando el administrador desee acabar la subasta tras el tiempo transcurrido, eje
 Es importante tener en cuenta que por simplificar la complejidad del contrato, el archivo almacenado en la IPFS siempre se almacenará ahí y que cuando un usuario compre la skin correspondiente a dicho archivo, se cambiará de propietario pero la imagen permanecerá en la IPFS.
 
 
-### Aplicación Web
+### Aplicación Web con REACT
 
+La aplicación permite a los usuarios interactuar con un contrato inteligente que maneja la compra, alquiler y subasta de skins. Se conecta a la blockchain utilizando la biblioteca ethers.js y permite la interacción con archivos almacenados en IPFS mediante kubo-rpc-client.
+
+Se implementan múltiples estados para gestionar información como conexión del usuario, lista de skins, subastas, saldo en ETH y detalles de administración. La aplicación detecta automáticamente si el usuario es administrador, lo que habilita funciones específicas como la creación de skins o el montaje de subastas.
+
+El flujo incluye:
+
+Conexión a una wallet Ethereum: Mediante window.ethereum, los usuarios pueden habilitar su cuenta para interactuar con el contrato.
+
+Carga de archivos a IPFS: Los usuarios pueden cargar archivos y vincularlos con skins mediante hashes CID de IPFS.
+
+Creación de skins: Solo el administrador puede crear nuevos skins con un nombre, precios de compra y alquiler, y un archivo IPFS.
+
+Compra de skins: Los usuarios pueden comprar skins disponibles por ETH, con el precio convertido a Wei para la transacción.
+
+Subastas: Los skins pueden subastarse, y los usuarios pueden pujar aumentando el precio actual. El administrador puede finalizar las subastas.
+
+Interfaz visual: Presenta secciones como:
+1. Skins disponibles para compra.
+2. Subastas activas.
+3. Skins propias del usuario.
+4. Panel de administración con opciones avanzadas.
+
+El código también contiene validaciones para garantizar que los campos estén completos antes de ejecutar transacciones y que los datos sean válidos
 ---
 
 ## Cómo Montarlo
