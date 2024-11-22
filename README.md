@@ -3,9 +3,8 @@
 Este proyecto implementa un sistema para la gestión de skins en videojuegos mediante contratos inteligentes en Solidity. Permite realizar operaciones como venta, alquiler y subastas de skins utilizando Ether como moneda.
 
 ## Autores
-- **Axel Valladares Pazó**  
-- **Pedro Blanco Casal**  
-
+- **Axel Valladares Pazó**   tiempo dedicado: 30 horas aproximadamente
+- **Pedro Blanco Casal**     tiempo dedicado: 30 horas aproximadamente
 
 ---
 
